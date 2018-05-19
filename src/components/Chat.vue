@@ -1,11 +1,11 @@
 <template>
   <div class="chat-container">
     <div class="message-container">
-      <v-list dark two-line class="message">
+      <v-list two-line class="message">
         <template v-for="item in messages">
           <v-list-tile avatar :key="item.title" @click="aaa">
             <v-list-tile-avatar>
-              <img :src="require('../assets/user_awake.png')">
+              <img :src="require('../assets/courier.png')">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-html="item.title"></v-list-tile-title>
@@ -15,7 +15,7 @@
         </template>
       </v-list>
     </div>
-    <div class="sendbox">
+    <div class="send-area">
       <input type="text" placeholder="Message" class="input" v-on:keyup.enter="sendMessage">
       <v-btn icon class="blue--text">
         <v-icon>send</v-icon>
@@ -96,11 +96,7 @@ export default {
   overflow-y: auto;
 }
 
-.message {
-  /* background-color:#fff; */
-}
-
-.sendbox {
+.send-area {
   box-sizing: border-box;
   height: 70px;
   bottom: 0;
@@ -108,6 +104,8 @@ export default {
   align-items: center;
   flex-direction: row;
   background-color: #fff;
+  border: solid gainsboro;
+  border-width: 1px 1px 1px 0px;
 }
 
 .input {
