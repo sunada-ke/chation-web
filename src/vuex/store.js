@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import home from './modules/home'
+import signin from './modules/signin'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    // home
+    signin
   },
   // In strict mode, if the state of Vuex is changed outside the mutation handler, it will throw an error.
   // Disable it in the production environment to avoid performance cost.

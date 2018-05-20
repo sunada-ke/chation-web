@@ -4,12 +4,7 @@
       <v-flex xs0 sm3 order-xs1 class="chats-container">
         <v-list two-line>
           <template v-for="item in talks">
-            <v-list-tile
-              :key="item.title"
-              ripple
-              avatar
-              @click="onItemClick"
-            >
+            <v-list-tile :key="item.title" ripple avatar @click="onItemClick">
               <v-list-tile-avatar>
                 <img :src="require('../assets/waiter.png')">
               </v-list-tile-avatar>
@@ -122,10 +117,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-/* .chats {
-  padding: 0;
-} */
 
 .chats-container {
   overflow-y: auto;

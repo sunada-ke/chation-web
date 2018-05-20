@@ -11,6 +11,9 @@
               <v-list-tile-title v-html="item.title"></v-list-tile-title>
               <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-list-tile-action-text>{{ item.time }}</v-list-tile-action-text>
+            </v-list-tile-action>
           </v-list-tile>
         </template>
       </v-list>
@@ -32,55 +35,68 @@ export default {
       messages: [
         {
           title: 'A',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'B',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '12:00'
         },
         {
           title: 'C',
-          subtitle: 'I send a message.'
+          subtitle: 'I send a message.',
+          time: '13:25'
         }
       ]
     }
