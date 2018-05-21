@@ -38,7 +38,6 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('beforeEach')
   if (to.matched.some(record => record.meta.authRequired) && isAuthenticated()) {
     if (localStorage.getItem('id_token')) {
       next()

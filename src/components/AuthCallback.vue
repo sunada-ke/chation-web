@@ -21,8 +21,7 @@ export default {
   }),
   watch: {
     authenticated() {
-      console.log('push')
-      // this.$router.push({ name: 'home' })
+      this.$router.push({ name: 'home' })
     }
   },
   methods: {
