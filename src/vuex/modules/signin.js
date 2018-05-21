@@ -14,15 +14,13 @@ const actions = {
   [SAVE_TOKENS] ({ commit }) {
     auth.parseHash((e, result) => {
       if (result && result.accessToken && result.idToken) {
-        let expiresAt = JSON.stringify(
-          result.expiresIn * 1000 + new Date().getTime()
-        )
+        let expiresAt = JSON.stringify(result.expiresIn * 1000 + new Date().getTime())
 
         storage.save('access_token', result.accessToken)
         storage.save('id_token', result.idToken)
         storage.save('expires_at', expiresAt)
 
-        commit(SET_AUTHENTICATED, true)
+        commit(SET_AUTHENTICATED)
       } else if (e) {
         console.log(e)
         // TODO: Error Hanling (Promise or Notification)
@@ -32,8 +30,8 @@ const actions = {
 }
 
 const mutations = {
-  [SET_AUTHENTICATED] (state, authenticated) {
-    state.authenticated = authenticated
+  [SET_AUTHENTICATED] (state) {
+    state.authenticated = true
   }
 }
 
