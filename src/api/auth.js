@@ -10,7 +10,6 @@ var webAuth = new auth0.WebAuth({
 })
 
 export default {
-
   authorize() {
     webAuth.authorize()
   }
