@@ -38,12 +38,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.authRequired) && isAuthenticated()) {
-    if (localStorage.getItem('id_token')) {
-      next()
-    } else {
-      next({ path: '/signin' })
-    }
+  if (to.matched.some(record => record.meta.authRequired) && !isAuthenticated()) {
+    next({ path: '/signin' })
   } else {
     next()
   }
@@ -53,7 +49,7 @@ router.beforeEach((to, from, next) => {
 function isAuthenticated() {
   let idToken = localStorage.getItem('id_token')
   let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
-  let expired = new Date().getTime() < expiresAt
+  let expired = !(new Date().getTime() < expiresAt)
   return idToken && !expired
 }
 
