@@ -12,5 +12,9 @@ export default {
 
   findIdToken() {
     return localStorage.getItem(ID_TOKEN)
+  },
+
+  findExpiresAt() {
+    return JSON.parse(localStorage.getItem(EXPIRES_AT))
   }
 }

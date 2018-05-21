@@ -10,9 +10,11 @@ import colors from 'vuetify/es5/util/colors'
 import router from './router'
 import store from './vuex/store'
 import VueI18n from 'vue-i18n'
+import Router from 'vue-router'
 
 Vue.config.productionTip = false
 
+Vue.use(Router)
 Vue.use(VueI18n)
 Vue.use(Vuetify, {
   theme: {
