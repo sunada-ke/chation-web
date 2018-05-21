@@ -8,11 +8,9 @@ const state = {
 }
 
 const actions = {
-
   [SIGN_IN] ({ commit }) {
     auth.authorize()
   },
-
   [SAVE_TOKENS] ({ commit }) {
     auth.parseHash((e, result) => {
       if (result && result.accessToken && result.idToken) {
