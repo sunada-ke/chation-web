@@ -10,11 +10,8 @@ var webAuth = new auth0.WebAuth({
 })
 
 export default {
+
   authorize() {
     webAuth.authorize()
-  },
-  parseHash(options, cb) {
-    // TODO: not api's function
-    webAuth.parseHash(options, cb)
   }
 }

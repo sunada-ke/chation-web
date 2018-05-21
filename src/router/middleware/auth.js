@@ -6,7 +6,6 @@ export default function auth(router) {
       let idToken = tokenCache.findIdToken()
       let expiresAt = tokenCache.findExpiresAt()
       let expired = !(new Date().getTime() < expiresAt)
-
       idToken && !expired ? next() : next({ path: '/signin' })
     } else {
       next()
