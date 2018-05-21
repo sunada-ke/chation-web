@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import signin from '../vuex/modules/signin'
+// import signin from '../vuex/modules/signin'
 import SignIn from '@/components/SignIn'
 import AuthCallback from '@/components/AuthCallback'
 import Home from '@/components/Home'
@@ -38,12 +38,25 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.authRequired) && !signin.state.authenticated) {
-    next({path: '/signin'})
+  console.log('beforeEach')
+  if (to.matched.some(record => record.meta.authRequired) && isAuthenticated()) {
+    if (localStorage.getItem('id_token')) {
+      next()
+    } else {
+      next({ path: '/signin' })
+    }
   } else {
     next()
   }
 })
+
+// TODO: Create a js file
+function isAuthenticated() {
+  let idToken = localStorage.getItem('id_token')
+  let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+  let expired = new Date().getTime() < expiresAt
+  return idToken && !expired
+}
 
 router.afterEach((to, from) => {
   if (to.meta && to.meta.title) {

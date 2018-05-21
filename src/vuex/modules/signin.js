@@ -1,6 +1,6 @@
 import auth from '../../api/auth'
-import storage from '../../storage/storage'
-import { SIGN_IN, SAVE_TOKENS } from '../action-types'
+import tokenCache from '../../storage/token-cache'
+import { SIGN_IN, SAVE_TOKENS, CHECK_AUTHENTICATED } from '../action-types'
 import { SET_AUTHENTICATED } from '../mutation-types'
 
 const state = {
@@ -15,10 +15,7 @@ const actions = {
     auth.parseHash((e, result) => {
       if (result && result.accessToken && result.idToken) {
         let expiresAt = JSON.stringify(result.expiresIn * 1000 + new Date().getTime())
-
-        storage.save('access_token', result.accessToken)
-        storage.save('id_token', result.idToken)
-        storage.save('expires_at', expiresAt)
+        tokenCache.saveTokens(result.accessToken, result.idToken, expiresAt)
 
         commit(SET_AUTHENTICATED)
       } else if (e) {
@@ -26,6 +23,12 @@ const actions = {
         // TODO: Error Hanling (Promise or Notification)
       }
     })
+  },
+  [CHECK_AUTHENTICATED]({ commit }) {
+    let idToken = localStorage.getItem('id_token')
+    if (idToken) {
+      commit(SET_AUTHENTICATED)
+    }
   }
 }
 

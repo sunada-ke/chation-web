@@ -1,6 +1,6 @@
 import auth0 from 'auth0-js'
 
-const authClient = new auth0.WebAuth({
+var webAuth = new auth0.WebAuth({
   domain: process.env.DOMAIN,
   clientID: process.env.CLIENT_ID,
   redirectUri: process.env.REDIRECT_URL,
@@ -10,13 +10,11 @@ const authClient = new auth0.WebAuth({
 })
 
 export default {
-
   authorize() {
-    authClient.authorize()
+    webAuth.authorize()
   },
-
   parseHash(options, cb) {
     // TODO: not api's function
-    authClient.parseHash(options, cb)
+    webAuth.parseHash(options, cb)
   }
 }
