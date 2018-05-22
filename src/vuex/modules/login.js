@@ -19,9 +19,10 @@ const state = {
 }
 
 const actions = {
-  [LOGIN] ({ commit }) {
+  [LOGIN]({ commit }) {
     authApi.authorize()
   },
+
   [SAVE_TOKENS] ({ commit }) {
     webAuth.parseHash((e, result) => {
       if (result && result.accessToken && result.idToken) {
@@ -37,6 +38,7 @@ const actions = {
 }
 
 const mutations = {
+
   [SET_AUTHENTICATED] (state) {
     state.authenticated = true
   }

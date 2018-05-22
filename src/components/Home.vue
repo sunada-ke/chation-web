@@ -32,10 +32,12 @@ import virtualList from 'vue-virtual-scroll-list'
 
 export default {
   name: 'Home',
+
   components: {
     Chat,
     'virtual-list': virtualList
   },
+
   data() {
     return {
       talks: [
@@ -107,6 +109,7 @@ export default {
       ]
     }
   },
+
   methods: {
     onItemClick () {
       console.log('onItemClick')

@@ -16,6 +16,7 @@ Vue.config.productionTip = false
 
 Vue.use(Router)
 Vue.use(VueI18n)
+
 Vue.use(Vuetify, {
   theme: {
     primary: colors.lightBlue.base,

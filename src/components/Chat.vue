@@ -30,6 +30,7 @@
 <script>
 export default {
   name: 'Chat',
+
   data() {
     return {
       messages: [

@@ -10,9 +10,11 @@ const { mapActions } = createNamespacedHelpers('login')
 
 export default {
   name: 'Login',
+
   mounted: function() {
     this.login()
   },
+
   methods: {
     ...mapActions({
       login: LOGIN

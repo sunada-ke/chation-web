@@ -13,17 +13,21 @@ const { mapActions, mapState } = createNamespacedHelpers('login')
 
 export default {
   name: 'AuthCallback',
+
   mounted () {
     this.saveToken()
   },
+
   computed: mapState({
     authenticated: state => state.authenticated
   }),
+
   watch: {
     authenticated() {
       this.$router.push({ name: 'home' })
     }
   },
+
   methods: {
     ...mapActions({
       saveToken: SAVE_TOKENS
