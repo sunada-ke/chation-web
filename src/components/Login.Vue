@@ -4,18 +4,18 @@
 </template>
 
 <script>
-import { SIGN_IN } from '../vuex/action-types'
+import { LOGIN } from '../vuex/action-types'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions } = createNamespacedHelpers('signin')
+const { mapActions } = createNamespacedHelpers('login')
 
 export default {
-  name: 'SignIn',
+  name: 'Login',
   mounted: function() {
-    this.signin()
+    this.login()
   },
   methods: {
     ...mapActions({
-      signin: SIGN_IN
+      login: LOGIN
     })
   }
 }

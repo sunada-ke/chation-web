@@ -1,6 +1,6 @@
 import auth from '../../api/auth'
-import tokenCache from '../../storage/token-cache'
-import { SIGN_IN, SAVE_TOKENS } from '../action-types'
+import tokenCache from '../../cache/token-cache'
+import { LOGIN, SAVE_TOKENS } from '../action-types'
 import { SET_AUTHENTICATED } from '../mutation-types'
 import auth0 from 'auth0-js'
 
@@ -19,7 +19,7 @@ const state = {
 }
 
 const actions = {
-  [SIGN_IN] ({ commit }) {
+  [LOGIN] ({ commit }) {
     auth.authorize()
   },
   [SAVE_TOKENS] ({ commit }) {

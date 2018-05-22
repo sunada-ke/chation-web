@@ -9,7 +9,7 @@
 <script>
 import { SAVE_TOKENS } from '../vuex/action-types'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState } = createNamespacedHelpers('signin')
+const { mapActions, mapState } = createNamespacedHelpers('login')
 
 export default {
   name: 'AuthCallback',
