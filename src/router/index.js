@@ -1,5 +1,5 @@
 import Router from 'vue-router'
-import middleware from './middleware'
+import createMiddleware from './middleware/create-middleware'
 import Login from '@/components/Login'
 import AuthCallback from '@/components/AuthCallback'
 import Home from '@/components/Home'
@@ -9,7 +9,7 @@ const router = new Router({
   routes: [
     {
       name: 'login',
-      path: '/action/login',
+      path: '/actions/login',
       component: Login,
       meta: { title: 'Chation Login' }
     },
@@ -34,6 +34,6 @@ const router = new Router({
   ]
 })
 
-middleware(router)
+createMiddleware(router)
 
 export default router

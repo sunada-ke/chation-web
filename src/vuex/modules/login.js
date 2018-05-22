@@ -1,4 +1,4 @@
-import auth from '../../api/auth'
+import authApi from '../../api/auth-api'
 import tokenCache from '../../cache/token-cache'
 import { LOGIN, SAVE_TOKENS } from '../action-types'
 import { SET_AUTHENTICATED } from '../mutation-types'
@@ -20,7 +20,7 @@ const state = {
 
 const actions = {
   [LOGIN] ({ commit }) {
-    auth.authorize()
+    authApi.authorize()
   },
   [SAVE_TOKENS] ({ commit }) {
     webAuth.parseHash((e, result) => {
