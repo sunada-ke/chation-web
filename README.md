@@ -2,3 +2,10 @@
 This is a web client for Chation.
 
 ![chation_screenshot.png](docs/chation_screenshot.png)
+
+# Getting Started
+
+``` bash
+$ yarn install
+$ yarn run dev
+```
