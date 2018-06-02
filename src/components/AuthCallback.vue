@@ -19,12 +19,18 @@ export default {
   },
 
   computed: mapState({
-    authenticated: state => state.authenticated
+    authenticated: 'authenticated',
+    parseHashError: 'parseHashError'
   }),
 
   watch: {
     authenticated() {
-      this.$router.push({ name: 'home' })
+      if (this.authenticated) this.$router.push({ name: 'home' })
+    },
+
+    parseHashError(e) {
+      console.log(e)
+      this.$router.push({ name: 'login' })
     }
   },
 

@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import login from './modules/login'
+import toolbar from './modules/toolbar'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
 
   modules: {
-    login
+    login,
+    toolbar
   },
 
   // In strict mode, if the state of Vuex is changed outside the mutation handler, it will throw an error.

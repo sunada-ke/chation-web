@@ -10,6 +10,12 @@ export default {
     localStorage.setItem(EXPIRES_AT, expiresAt)
   },
 
+  deleteTokens() {
+    localStorage.removeItem(ACCESS_TOKEN)
+    localStorage.removeItem(ID_TOKEN)
+    localStorage.removeItem(EXPIRES_AT)
+  },
+
   findIdToken() {
     return localStorage.getItem(ID_TOKEN)
   },

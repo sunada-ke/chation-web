@@ -1,18 +1,8 @@
 import authApi from '../../api/auth-api'
+import webAuth from '../../auth/web-auth'
 import tokenCache from '../../cache/token-cache'
 import { LOGIN, SAVE_TOKENS } from '../action-types'
-import { SET_AUTHENTICATED } from '../mutation-types'
-import auth0 from 'auth0-js'
-
-// TODO:
-var webAuth = new auth0.WebAuth({
-  domain: process.env.DOMAIN,
-  clientID: process.env.CLIENT_ID,
-  redirectUri: process.env.REDIRECT_URL,
-  audience: process.env.AUDIENCE,
-  responseType: process.env.RESPONSE_TYPE,
-  scope: process.env.SCOPE
-})
+import { SET_AUTHENTICATED, SET_PARSE_HASH_ERROR } from '../mutation-types'
 
 const state = {
   authenticated: false
@@ -30,8 +20,7 @@ const actions = {
         tokenCache.saveTokens(result.accessToken, result.idToken, expiresAt)
         commit(SET_AUTHENTICATED)
       } else if (e) {
-        console.log(e)
-        // TODO: Error Hanling (Promise or Notification)
+        commit(SET_PARSE_HASH_ERROR, e)
       }
     })
   }
@@ -41,6 +30,10 @@ const mutations = {
 
   [SET_AUTHENTICATED] (state) {
     state.authenticated = true
+  },
+
+  [SET_PARSE_HASH_ERROR] (state, e) {
+    state.parseHashError = e
   }
 }
 
