@@ -22,7 +22,7 @@ import { FETCH_ROOMS } from '../vuex/action-types'
 import { createNamespacedHelpers } from 'vuex'
 import toast from '../util/toast'
 
-const { mapActions, mapState } = createNamespacedHelpers('rooms')
+const { mapActions, mapState } = createNamespacedHelpers('chat')
 
 export default {
   name: 'Rooms',

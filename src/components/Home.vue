@@ -2,31 +2,25 @@
     <div class="home">
       <v-layout row>
         <v-flex xs0 sm3 order-xs1 class="chats-container">
-          <rooms></rooms>
+          <room></room>
         </v-flex>
         <v-flex sm9 order-xs2>
-          <chats></chats>
+          <chat></chat>
         </v-flex>
       </v-layout>
     </div>
 </template>
 
 <script>
-import Rooms from './Rooms'
-import Chats from './Chats'
+import Room from './Room'
+import Chat from './Chat'
 
 export default {
   name: 'Home',
 
   components: {
-    Rooms,
-    Chats
-  },
-
-  methods: {
-    onItemClick () {
-      console.log('onItemClick')
-    }
+    Room,
+    Chat
   }
 }
 </script>
