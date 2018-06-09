@@ -4,7 +4,7 @@
       {{ $t("title") }}
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn v-on:click="logout" icon>
+    <v-btn @click="logout" icon>
       <v-icon>exit_to_app</v-icon>
     </v-btn>
   </v-toolbar>

@@ -5,7 +5,8 @@ import { LOGIN, SAVE_TOKENS } from '../action-types'
 import { SET_AUTHENTICATED, SET_PARSE_HASH_ERROR } from '../mutation-types'
 
 const state = {
-  authenticated: false
+  authenticated: false,
+  parseHashError: null
 }
 
 const actions = {

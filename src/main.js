@@ -9,13 +9,25 @@ import Vuetify from 'vuetify'
 import colors from 'vuetify/es5/util/colors'
 import router from './router'
 import store from './vuex/store'
-import VueI18n from 'vue-i18n'
 import Router from 'vue-router'
+import VueI18n from 'vue-i18n'
+import vueMoment from 'vue-moment'
+import momentTimezone from 'moment-timezone'
+import Toasted from 'vue-toasted'
 
 Vue.config.productionTip = false
 
 Vue.use(Router)
 Vue.use(VueI18n)
+Vue.use(vueMoment, {
+  momentTimezone
+})
+Vue.use(Toasted, {
+  theme: 'bubble',
+  position: 'bottom-center',
+  singleton: true,
+  duration: 2000
+})
 
 Vue.use(Vuetify, {
   theme: {

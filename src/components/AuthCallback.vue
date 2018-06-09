@@ -29,7 +29,6 @@ export default {
     },
 
     parseHashError(e) {
-      console.log(e)
       this.$router.push({ name: 'login' })
     }
   },

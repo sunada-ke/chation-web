@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import login from './modules/login'
 import toolbar from './modules/toolbar'
+import rooms from './modules/rooms'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,8 @@ export default new Vuex.Store({
 
   modules: {
     login,
-    toolbar
+    toolbar,
+    rooms
   },
 
   // In strict mode, if the state of Vuex is changed outside the mutation handler, it will throw an error.

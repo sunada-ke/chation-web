@@ -3,7 +3,7 @@
     <div class="message-container">
       <v-list two-line class="message">
         <template v-for="item in messages">
-          <v-list-tile avatar :key="item.title" @click="aaa">
+          <v-list-tile avatar :key="item.id">
             <v-list-tile-avatar>
               <img :src="require('../assets/courier.png')">
             </v-list-tile-avatar>
