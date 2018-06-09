@@ -7,6 +7,7 @@ const state = {
 }
 
 const actions = {
+
   [LOGOUT]({ commit }) {
     tokenCache.deleteTokens()
     commit(SET_LOGGED_OUT)

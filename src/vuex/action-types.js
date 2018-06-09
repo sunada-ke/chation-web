@@ -1,5 +1,6 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SAVE_TOKENS = 'SAVE_TOKENS'
-export const FETCH_ROOMS = 'FETCH_ROOMS'
+export const FETCH_CHATS = 'FETCH_CHATS'
+export const FETCH_MESSAGES = 'FETCH_MESSAGES'
 export const SHOW_SNACKBAR = 'SHOW_SNACKBAR'

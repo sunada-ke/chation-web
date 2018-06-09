@@ -1,18 +1,18 @@
 <template>
-  <div class="chat-container">
+  <div>
     <div class="message-container">
       <v-list two-line class="message">
         <template v-for="item in messages">
           <v-list-tile avatar :key="item.id">
             <v-list-tile-avatar>
-              <img :src="require('../assets/courier.png')">
+              <img :src="require('../assets/waiter.png')">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title v-html="item.title"></v-list-tile-title>
-              <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+              <v-list-tile-title v-html="item.senderName"></v-list-tile-title>
+              <v-list-tile-sub-title v-html="item.message"></v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ item.time }}</v-list-tile-action-text>
+              <v-list-tile-action-text>{{ item.sendAt | moment('HH:mm') }}</v-list-tile-action-text>
             </v-list-tile-action>
           </v-list-tile>
         </template>
@@ -28,80 +28,16 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapState } = createNamespacedHelpers('chat')
+
 export default {
   name: 'Chat',
 
-  data() {
-    return {
-      messages: [
-        {
-          title: 'A',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'B',
-          subtitle: 'I send a message.',
-          time: '12:00'
-        },
-        {
-          title: 'C',
-          subtitle: 'I send a message.',
-          time: '13:25'
-        }
-      ]
-    }
-  }
+  computed: mapState({
+    messages: 'messages',
+    fetchMessagesError: 'fetchMessagesError'
+  })
 }
 </script>
 
@@ -109,7 +45,7 @@ export default {
 
 .message-container {
   box-sizing: border-box;
-  height: calc(100vh - 64px - 70px);
+  height: calc(100vh - 70px);
   overflow-y: auto;
 }
 

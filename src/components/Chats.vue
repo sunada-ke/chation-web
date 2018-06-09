@@ -1,7 +1,7 @@
 <template>
-  <v-list two-line>
-    <template v-for="item in rooms">
-      <v-list-tile :key="item.title" ripple avatar @click="onItemClick">
+  <v-list two-line class="chats-container">
+    <template v-for="item in chats">
+      <v-list-tile :key="item.title" ripple avatar @click="onItemClick(item.id)">
         <v-list-tile-avatar>
           <img :src="require('../assets/waiter.png')">
         </v-list-tile-avatar>
@@ -18,38 +18,50 @@
 </template>
 
 <script>
-import { FETCH_ROOMS } from '../vuex/action-types'
+import { FETCH_CHATS, FETCH_MESSAGES } from '../vuex/action-types'
 import { createNamespacedHelpers } from 'vuex'
 import toast from '../util/toast'
 
 const { mapActions, mapState } = createNamespacedHelpers('chat')
 
 export default {
-  name: 'Rooms',
+  name: 'Chats',
 
   mounted () {
-    this.fetchRooms()
+    this.fetchChats()
   },
 
   computed: mapState({
-    rooms: 'rooms',
-    fetchRoomsError: 'fetchRoomsError'
+    chats: 'chats',
+    fetchChatsError: 'fetchChatsError'
   }),
 
   watch: {
-    fetchRoomsError(e) {
+    fetchChatsError(e) {
       toast.showFailed()
     }
   },
 
   methods: {
     ...mapActions({
-      fetchRooms: FETCH_ROOMS
+      fetchChats: FETCH_CHATS,
+      fetchMessages: FETCH_MESSAGES
     }),
 
-    onItemClick () {
-      console.log('onItemClick')
+    onItemClick (chatId) {
+      this.fetchMessages(chatId)
     }
   }
 }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+.chats-container {
+  overflow-y: auto;
+  height: 100vh;
+  border-right: solid 1px gainsboro
+}
+
+</style>

@@ -32,7 +32,7 @@ $ yarn run start
 After Running the mock server, you can fetch json data.
 
 ``` bash
-$ curl  http://localhost:3000/rooms
+$ curl  http://localhost:3000/chats
 ```
 
 # Start
