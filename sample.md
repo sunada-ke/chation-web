@@ -192,3 +192,73 @@ read -p "files download end"
 そして[2.インポート](https://git.cicd.lakeelcloud.com/applications/services/lakeel-visual-mosaic/documents/-/blob/master/99_%E3%81%9D%E3%81%AE%E4%BB%96/%E5%90%84%E7%A8%AE%E6%89%8B%E9%A0%86/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E6%89%8B%E9%A0%86.md#2-%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88)を実行します。  
 
 @sunada-ke
+
+
+全サイト利用しないウィジェットを削除sql↓  
+```sql
+var used_widgets = []
+db.getCollection('pages').distinct('widgets').forEach(widget => {
+    if (widget.widgetId && widget.version && typeof widget.widgetId === 'string' && typeof widget.version === 'string') {
+          used_widgets.push(widget)
+    }
+})
+if (used_widgets.length > 0) {
+    db.getCollection('widgets').remove({$nor:used_widgets})
+}
+```
+
+>LWF で利用していないウィジェットというよりも、プレビュー画像などがない不整合データのウィジェットを削除する方針にしないといけないかと思います。
+
+不整合データを探したいなら、lvmDBとfileDBを結合して検索する必要があります。「利用しないウィジェットを削除する」このやり方で十分と思います。
+
+>この SQL は、ハードコーディングではなく、SQL の中で対応すべき terminalId を検索して更新かける処理にして欲しいです。というのも、また、別の環境に LWF をインポートした際、このように terminalId を調べる必要が出てくるので。
+
+dev環境で下記のsqlを実行してください↓↓  
+```sql
+var terminal_list = []
+db.getCollection('pageTerminals').find({},{width:1,height:1}).forEach(item => {
+    item._id = String(item._id).split('\"')[1].split('\"')[0]
+    terminal_list.push(item)
+})
+terminal_list
+```
+以下のデータ(terminal_list)を取得します↓↓  
+```json
+[
+    {
+        "_id" : "5d2413a22557d23b0a33c5ba",
+        "width" : 320,
+        "height" : 568
+    },
+    {
+        "_id" : "5d2413a22557d21ad333c5bb",
+        "width" : 375,
+        "height" : 667
+    }
+]
+```
+HC環境で下記のsqlを実行してください↓↓  
+```sql
+// 実際のterminal_listを入力して
+var terminal_list = []
+function findTerminalId(terminal, terminals){
+    var terminalId = terminal._id
+    terminals.forEach(item => {
+        if (terminal.width === item.width && terminal.height === item.height) {
+            terminalId = item._id
+        }
+    })
+    return terminalId
+}
+var hc_terminals = []
+db.getCollection('pageTerminals').find({},{width:1,height:1}).forEach(item => {
+    item._id = String(item._id).split('\"')[1].split('\"')[0]
+    hc_terminals.push(item)
+})
+terminal_list.forEach(terminal => {
+    var hc_terminalId = findTerminalId(terminal, hc_terminals)
+    db.getCollection('pages').update({'terminalId':terminal._id},{$set:{'terminalId':hc_terminalId}},false,true)
+})
+```
+
+@sunada-ke
