@@ -1,123 +1,194 @@
-# Overview
+## 優先度最高
 
-`LaKeel Job Scheduler` は、作業単位のスケジュールを設定して、定義した一定の間隔で実行できます。  
-作成された各ジョブは、指定のスケジュールに従って `LaKeel Synergy Logic` が管理するマイクロサービスを呼び出します。
+>また、いくつかのページ編集画面で client-session-schema-json.json のファイル取得に失敗しました
 
-また、複数のノードインスタンスからを同じジョブを処理しないようにするため、実行されたジョブは10分間ロックされます。  
-これにより、他のジョブプロセッサがジョブ再度実行できないことが保証されます。ジョブが完了すると、自動的にロックは解除されます。
+インポート/エクスポート手順の[ページデータのエクスポート手順](https://git.cicd.lakeelcloud.com/applications/services/lakeel-visual-mosaic/documents/-/blob/master/99_%E3%81%9D%E3%81%AE%E4%BB%96/%E5%90%84%E7%A8%AE%E6%89%8B%E9%A0%86/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E6%89%8B%E9%A0%86.md#1-5-%E3%83%9A%E3%83%BC%E3%82%B8%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88)に漏れました。  
 
-# Example Usage
+下記のコードを robo3T で実行します。
 
-5分ごとに 死活監視API を実行します。
+```javascript
 
-```typescript
-import { WebApiClientFactory, ClientType } from 'lib-web-api-client';
+// 実際のサイトのドメインを設定。
+var domain = ''
+var site = db.getCollection('sites').find({siteIndex:domain})
+var siteCd = site[0].siteCd
+var clientSessions = db.getCollection('pages').distinct('clientSession.schema', {siteCd:siteCd})
+var urls = []
+clientSessions.forEach((cs) => {
+    urls.push('files/lvm/pages/' + cs.split(/\//g).reverse()[2] + '/' + cs.split(/\//g).reverse()[1])
+})
+urls
+```
 
-async functionName(arg) {
-  const apiclient = WebApiClientFactory.create(ClientType.frontend, this.$lakeelSynergyLogicApiBaseUri);
-  const lslConfig = {
-    serviceCode: 'lakeel-job-scheduler-api',
-    apiCode: 'post_/v1/jobs/{name}/repeat',
-    path: {
-      name: 'Health Check Job'
+以下のように、サイトで利用しているページデータを取得できます。
+
+```json
+
+[
+    "files/lvm/pages/1568961152153/1",
+    "files/lvm/pages/1574056223079/1",
+    "files/lvm/pages/1574056283449/1",
+]
+```
+
+また、ファイル基盤の DB からページ関連のデータをエクスポートします。  
+上記、JSON の " を ' に変換して、下記の SQL を pgadmin で実行します。SQL 実行結果 (CSV) をダウンロードします。
+
+```sql
+
+-- `page_urls` は、上記、JSON の " を ' に変換した内容に置き換える。
+
+SELECT *
+FROM public.file_metadata
+WHERE directory IN (page_urls) AND file_name like '%json%';
+``` 
+
+## 優先度高
+
+>* メディアの画像が一部表示されない  
+
+[メディアエクスポート手順](https://git.cicd.lakeelcloud.com/applications/services/lakeel-visual-mosaic/documents/-/blob/master/99_%E3%81%9D%E3%81%AE%E4%BB%96/%E5%90%84%E7%A8%AE%E6%89%8B%E9%A0%86/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E6%89%8B%E9%A0%86.md#1-3-%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88)の対象は足りないので、以下の操作を行い、メディアを再インポートする必要があります。  
+
+下記のコードを robo3T で実行します。  
+```javascript
+var domain = ''
+var site = db.getCollection('sites').find({siteIndex:domain})
+var siteCd = site[0].siteCd
+var media_urls = []
+db.getCollection('medias').find({siteCd:siteCd}).forEach(item => {
+    media_urls.push(item.detailImg.slice(item.detailImg.lastIndexOf('/') + 1))
+    media_urls.push(item.previewImg.slice(item.previewImg.lastIndexOf('/') + 1))
+})
+media_urls
+```
+以下のように、サイトで利用しているメディアを取得できます。
+
+```json
+
+[
+    "f2bb9c0c-637c-4a46-a321-a37654333bef.png",
+    "15985186-438c-4629-aff7-5589931cb703.png",
+    "f411c600-4236-415d-9c1b-b88d2651a9cf.png",
+]
+```
+
+また、ファイル基盤の DB からメディア関連のデータをエクスポートします。  
+上記、JSON の " を ' に変換して、下記の SQL を pgadmin で実行します。SQL 実行結果 (CSV) をダウンロードします。
+
+```sql
+
+-- `media_urls` は、上記、JSON の " を ' に変換した内容に置き換える。
+
+SELECT *
+FROM public.file_metadata
+WHERE directory = 'files/lvm/medias'
+	AND file_name IN (media_urls);
+```
+
+## 優先度中
+
+>- ウィジェットのエクスポート対象が全サイトで利用しているウィジェットになっている
+
+エクスポートロジックを後で修正します。今回はLVM から LWF に不要なウィジェットを削除します。  
+
+```sql
+// 実際のサイトのドメインを設定。
+var domain = ''
+var site = db.getCollection('sites').find({siteIndex:domain})
+var siteCd = site[0].siteCd
+var used_widgets = []
+db.getCollection('pages').distinct('widgets',{siteCd:siteCd}).forEach(widget => {
+    if (widget.widgetId && widget.version && typeof widget.widgetId === 'string' && typeof widget.version === 'string') {
+          used_widgets.push(widget)
     }
-  };
-  const data =  {
-    serviceCode: 'lakeel-job-scheduler-api',
-    apiCode: 'get_/v1/health-check',
-    interval: '0 */5 * * * *',
-    timezone: 'Asia/Tokyo'
-  };
-  return await apiclient.request({ lslConfig, data });
+})
+if (used_widgets.length > 0) {
+    db.getCollection('widgets').remove({$nor:used_widgets})
 }
 ```
 
-# Creating jobs
+---
 
-`LaKeel Job Scheduler` のジョブは、`LaKeel Synergy Logic` に登録された APIを呼び出します。  
-3種類の実行方法を提供します。
+>Layouts DB のドメインに変なサイトコードが入っている  
 
-## 1. 繰り返し実行
+これはインポート失敗時の仮のサイトドメインです。削除して良いです。  
 
-繰り返し実行されるジョブを作成します。
+postgre DBで下記のコード実行してください。
 
-| API コード |
-| --- |
-| post_/v1/jobs/{name}/repeat |
+```sql
+DELETE FROM affiliates WHERE domain ~ '[0-9]{13}$';
+DELETE FROM error_definition WHERE domain ~ '[0-9]{13}$';
+DELETE FROM meta_tags WHERE domain ~ '[0-9]{13}$';
+DELETE FROM page_layouts WHERE domain ~ '[0-9]{13}$';
+DELETE FROM site_setting WHERE domain ~ '[0-9]{13}$';
+DELETE FROM version WHERE domain ~ '[0-9]{13}$';
+```  
 
-繰り返しスケジュールは cron フォーマット文字列を指定します。
-[cron - Wikipedia](https://en.wikipedia.org/wiki/Cron)
+---
 
-## 2. 日時指定実行
+最後  
 
-指定された日時に実行されるジョブを作成します。
+S3 にアップロードしているファイル一覧を取得して、sh コマンドでファイルをダウンロードします。下記のコードを robo3T で実行します。
 
-| API コード |
-| --- |
-| post_/v1/jobs/{name}/schedule |
+```sql
+// 実際のサイトのドメインを設定。
+var domain = ''
+var site = db.getCollection('sites').find({siteIndex:domain})
+var siteCd = site[0].siteCd
+var urls = []
+db.getCollection('medias').find({siteCd:siteCd}).forEach(item => {
+    urls.push(item.detailImg.slice(item.detailImg.indexOf('/files')))
+    urls.push(item.previewImg.slice(item.previewImg.indexOf('/files')))
+})
+db.getCollection('pages').distinct('clientSession.schema').forEach((cs) => {
+    urls.push('files/lvm/pages/' + cs.split(/\//g).reverse()[2] + '/' + cs.split(/\//g).reverse()[1] + '/' + cs.split(/\//g).reverse()[0])
+})
+urls
+```
 
-実行日時を ISO 8601 フォーマット文字列で指定します。[ISO 8601 - Wikipedia](https://en.wikipedia.org/wiki/ISO_8601)
+以下のように、S3 にアップロードされているファイル一覧を取得できます。
 
-## 3. 即時実行
+```json
 
-即時実行されるジョブを作成します。
+[
+    "/files/lvm/medias/ea194b16-8939-45ee-8672-aa1e35e9fccc.png",
+    "/files/lvm/medias/bb9f85e5-0b43-436f-b07f-feeb8fa23c0c.png",
+    "files/lvm/pages/1583736376429/1/client-session-json-schema.json",
+    "files/lvm/pages/1583736874202/1/client-session-json-schema.json",
+]
+```
 
-| API コード |
-| --- |
-| post_/v1/jobs/{name}/now |
+以下のコードを .sh ファイルに保存して実行します。
 
-この APIが呼ばれたタイミングでジョブが実行されます。
+```shell
 
-# Managing Jobs
+#!/bin/bash
 
-ジョブの取得、削除、更新 APIの用意があります。
+# S3 のファイルダウンロード先のローカルディレクトリ。
+local_file_base=''
 
-繰り返し実行ジョブのみ、ジョブの変更を行えます。 日時指定実行ジョブ と 即時実行ジョブ の変更はできません。  
-まだ実行していない日時指定実行ジョブ（= 実行の予約）を変更する場合は、削除してから再作成してください。
+# 上記の JSON の , を削除して、file_list に置き換える。
+file_list=(
+)
 
-## 1. 全件取得
+# S3 バケットパス。(例: s3://commerce-public.dev.lakeelcloud.com)
+s3_base_bucket=
 
-ジョブを全て取得します。
+# create directory
+if [ ! -d $local_file_base ];then
+mkdir $local_file_base
+fi
 
-| API コード |
-| --- |
-| get_/v1/jobs |
+for file_src in ${file_list[@]};do
+file_dir=${file_src%/*}
+if [ ! -d $s3_base_bucket$file_dir ];then
+mkdir -p $s3_base_bucket$file_dir
+fi
+aws s3 cp $s3_base_bucket$file_src $local_file_base$file_src
+done
+read -p "files download end"
+```
 
-## 2. 1件取得
+そして[2.インポート](https://git.cicd.lakeelcloud.com/applications/services/lakeel-visual-mosaic/documents/-/blob/master/99_%E3%81%9D%E3%81%AE%E4%BB%96/%E5%90%84%E7%A8%AE%E6%89%8B%E9%A0%86/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88/%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%83%BB%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E6%89%8B%E9%A0%86.md#2-%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88)を実行します。  
 
-ジョブを取得します。
-
-| API コード |
-| --- |
-| get_/v1/jobs/{name} |
-
-## 3. 削除
-
-ジョブを削除します。
-
-| API コード |
-| --- |
-| delete_/v1/jobs/{name} |
-
-## 4. 更新
-
-繰り返し実行されるジョブを更新します。
-
-| API コード |
-| --- |
-| put_/v1/jobs/{name}/repeat |
-
-# Logging
-
-ジョブの実行ログがアプリケーションログのログレベル'Info'に記録されます。
-
-| イベント | メッセージ | 備考 |
-| --- | --- | --- |
-| start | Job '{テナントコード}.{ジョブ名}' starting. |  |
-| complete | Job '{テナントコード}.{ジョブ名}' finished. |  |
-| success | Job '{テナントコード}.{ジョブ名}' succeeded. |  |
-| fail | Job '{テナントコード}.{ジョブ名}' failed.` | エラー情報が出力されます。 |
-
-**<span style="color: red; ">注意</span>**
-
-failイベントは指定されたタイミングで指定されたサービスの呼び出しが失敗した時に出力されます。呼び出したサービス側で発生したエラーではありません。
+@sunada-ke
